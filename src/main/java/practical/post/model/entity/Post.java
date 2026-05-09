@@ -3,15 +3,15 @@ package practical.post.model.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Table(name = "post")
-@Entity
-@AllArgsConstructor
-@RequiredArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "post")
 public class Post {
     @Id
     @Column(name = "id")

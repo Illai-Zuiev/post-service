@@ -16,7 +16,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public CustomResponse<PostDto> getById(int id) {
+    public CustomResponse<PostDto> findById(int id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
