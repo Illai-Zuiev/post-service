@@ -31,3 +31,4 @@ end:
   point:
     posts: /post
     id: /{id}
+    create: /create

@@ -2,10 +2,12 @@ package practical.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import practical.post.mapper.PostMapper;
 import practical.post.model.constants.ApiErrorMessage;
 import practical.post.model.dto.post.PostDto;
 import practical.post.model.entity.Post;
 import practical.post.model.exceptions.NotFoundException;
+import practical.post.model.request.post.PostRequest;
 import practical.post.model.response.CustomResponse;
 import practical.post.repository.PostRepository;
 import practical.post.service.PostService;
@@ -14,6 +16,7 @@ import practical.post.service.PostService;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
 
     @Override
     public CustomResponse<PostDto> findById(int id) {
@@ -21,11 +24,18 @@ public class PostServiceImpl implements PostService {
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
 
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setContent(post.getContent());
-        postDto.setCreated(post.getCreated());
+        PostDto postDto = postMapper.convertPostToPostDto(post);
+
+        return CustomResponse.createSuccessful(postDto);
+    }
+
+    @Override
+    public CustomResponse<PostDto> save(PostRequest postRequest) {
+        Post post = postMapper.convertPostRequestToPost(postRequest);
+
+        post = postRepository.save(post);
+
+        PostDto postDto = postMapper.convertPostToPostDto(post);
 
         return CustomResponse.createSuccessful(postDto);
     }
