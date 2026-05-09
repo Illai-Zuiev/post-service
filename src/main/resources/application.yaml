@@ -27,3 +27,7 @@ logging:
         web: DEBUG
   practical:
     post: TRACE
+end:
+  point:
+    posts: /post
+    id: /{id}
