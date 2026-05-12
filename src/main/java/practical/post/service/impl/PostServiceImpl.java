@@ -6,6 +6,7 @@ import practical.post.mapper.PostMapper;
 import practical.post.model.constants.ApiErrorMessage;
 import practical.post.model.dto.post.PostDto;
 import practical.post.model.entity.Post;
+import practical.post.model.exceptions.DataExistsException;
 import practical.post.model.exceptions.NotFoundException;
 import practical.post.model.request.post.PostRequest;
 import practical.post.model.response.CustomResponse;
@@ -31,6 +32,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CustomResponse<PostDto> save(PostRequest postRequest) {
+        if (postRepository.existsByTitle(postRequest.getTitle())) {
+            throw new DataExistsException(ApiErrorMessage.POST_WITH_THIS_TITLE_EXIST.getMessage(postRequest.getTitle()));
+        }
+
         Post post = postMapper.convertPostRequestToPost(postRequest);
 
         post = postRepository.save(post);

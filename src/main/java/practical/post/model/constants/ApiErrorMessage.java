@@ -8,6 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ApiErrorMessage {
     POST_NOT_FOUND_BY_ID("The post not found with id: %s"),
+    POST_WITH_THIS_TITLE_EXIST("The post with this title already exists: %s"),
 
     ;
     private final String message;

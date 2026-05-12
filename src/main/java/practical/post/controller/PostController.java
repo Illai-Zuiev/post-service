@@ -1,5 +1,6 @@
 package practical.post.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class PostController {
     }
 
     @PostMapping("${end.point.create}")
-    public ResponseEntity<CustomResponse<PostDto>> savePost(@RequestBody PostRequest postRequest) {
+    public ResponseEntity<CustomResponse<PostDto>> savePost(@Valid @RequestBody PostRequest postRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
         CustomResponse<PostDto> postDtoCustomResponse = postService.save(postRequest);
         return ResponseEntity.ok(postDtoCustomResponse);

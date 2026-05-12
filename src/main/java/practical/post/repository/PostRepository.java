@@ -6,4 +6,5 @@ import practical.post.model.entity.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
+    boolean existsByTitle(String title);
 }
