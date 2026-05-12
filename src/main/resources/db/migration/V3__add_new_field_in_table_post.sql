@@ -1,0 +1,1 @@
+ALTER TABLE post ADD COLUMN updated timestamp NOT NULL DEFAULT current_timestamp;

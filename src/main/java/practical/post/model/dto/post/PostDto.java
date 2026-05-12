@@ -15,4 +15,5 @@ public class PostDto implements Serializable {
     private String title;
     private String content;
     private LocalDateTime created;
+    private LocalDateTime updated;
 }

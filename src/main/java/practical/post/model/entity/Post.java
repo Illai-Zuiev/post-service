@@ -23,4 +23,6 @@ public class Post {
     private String content;
     @Column(name = "created")
     private LocalDateTime created = LocalDateTime.now();
+    @Column(name = "updated")
+    private LocalDateTime updated = LocalDateTime.now();
 }

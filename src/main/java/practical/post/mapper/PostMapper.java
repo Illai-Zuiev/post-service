@@ -18,5 +18,6 @@ public interface PostMapper {
     PostDto convertPostToPostDto(Post post);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
+    @Mapping(target = "updated", ignore = true)
     Post convertPostRequestToPost(PostRequest postRequest);
 }
