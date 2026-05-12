@@ -25,4 +25,6 @@ public class Post {
     private LocalDateTime created = LocalDateTime.now();
     @Column(name = "updated")
     private LocalDateTime updated = LocalDateTime.now();
+    @Column(name = "deleted")
+    private boolean deleted = false;
 }

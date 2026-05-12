@@ -3,6 +3,7 @@ package practical.post.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practical.post.model.constants.ApiLogMessage;
@@ -40,5 +41,13 @@ public class PostController {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
         CustomResponse<PostDto> postDtoCustomResponse = postService.update(id, updatePostRequest);
         return ResponseEntity.ok(postDtoCustomResponse);
+    }
+
+    @DeleteMapping("${end.point.delete}")
+    public ResponseEntity<Void> deletePost(@PathVariable int id) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        postService.delete(id);
+//        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

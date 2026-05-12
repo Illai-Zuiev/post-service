@@ -9,4 +9,5 @@ public interface PostService {
     CustomResponse<PostDto> findById(int id);
     CustomResponse<PostDto> save(PostRequest postRequest);
     CustomResponse<PostDto> update(int id, UpdatePostRequest postRequest);
+    void delete(int id);
 }

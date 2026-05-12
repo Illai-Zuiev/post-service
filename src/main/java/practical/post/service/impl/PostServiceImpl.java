@@ -68,4 +68,16 @@ public class PostServiceImpl implements PostService {
 
         return CustomResponse.createSuccessful(postDto);
     }
+
+    @Override
+    public void delete(int id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
+        );
+
+        post.setUpdated(LocalDateTime.now());
+        post.setDeleted(true);
+
+        postRepository.save(post);
+    }
 }

@@ -19,5 +19,6 @@ public interface PostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "updated", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
     Post convertPostRequestToPost(PostRequest postRequest);
 }

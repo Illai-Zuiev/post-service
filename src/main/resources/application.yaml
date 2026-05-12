@@ -33,3 +33,4 @@ end:
     id: /{id}
     create: /create
     update: /update/{id}
+    delete: /delete/{id}
