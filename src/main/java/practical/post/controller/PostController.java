@@ -12,6 +12,7 @@ import practical.post.model.constants.ApiLogMessage;
 import practical.post.model.dto.post.PostDto;
 import practical.post.model.dto.post.PostSearchDto;
 import practical.post.model.request.post.PostRequest;
+import practical.post.model.request.post.PostSearchRequest;
 import practical.post.model.request.post.UpdatePostRequest;
 import practical.post.model.response.CustomResponse;
 import practical.post.model.response.PaginationResponse;
@@ -64,6 +65,20 @@ public class PostController {
         Pageable pageable = PageRequest.of(page, limit);
 
         CustomResponse<PaginationResponse<PostSearchDto>> response = postService.findAllByPage(pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("${end.point.search}")
+    public ResponseEntity<CustomResponse<PaginationResponse<PostSearchDto>>> findAllPostsWithCriteria(
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "10", name = "limit") int limit,
+            @RequestBody PostSearchRequest postSearchRequest) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        Pageable pageable = PageRequest.of(page, limit);
+
+        CustomResponse<PaginationResponse<PostSearchDto>> response = postService.findAllByPageWithCriteria(postSearchRequest, pageable);
 
         return ResponseEntity.ok(response);
     }

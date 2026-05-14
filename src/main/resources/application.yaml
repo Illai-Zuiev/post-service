@@ -35,3 +35,4 @@ end:
     update: /update/{id}
     delete: /delete/{id}
     all: /all
+    search: /search
