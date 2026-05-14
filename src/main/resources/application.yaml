@@ -34,3 +34,4 @@ end:
     create: /create
     update: /update/{id}
     delete: /delete/{id}
+    all: /all

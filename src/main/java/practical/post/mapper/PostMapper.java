@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import practical.post.model.dto.post.PostDto;
+import practical.post.model.dto.post.PostSearchDto;
 import practical.post.model.entity.Post;
 import practical.post.model.request.post.PostRequest;
 
@@ -21,4 +22,5 @@ public interface PostMapper {
     @Mapping(target = "updated", ignore = true)
     @Mapping(target = "deleted", ignore = true)
     Post convertPostRequestToPost(PostRequest postRequest);
+    PostSearchDto convertPostToPostSearchDto(Post post);
 }

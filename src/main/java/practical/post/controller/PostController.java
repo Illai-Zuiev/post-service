@@ -3,14 +3,18 @@ package practical.post.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practical.post.model.constants.ApiLogMessage;
 import practical.post.model.dto.post.PostDto;
+import practical.post.model.dto.post.PostSearchDto;
 import practical.post.model.request.post.PostRequest;
 import practical.post.model.request.post.UpdatePostRequest;
 import practical.post.model.response.CustomResponse;
+import practical.post.model.response.PaginationResponse;
 import practical.post.service.PostService;
 import practical.post.utils.ApiUtils;
 
@@ -49,5 +53,18 @@ public class PostController {
         postService.delete(id);
 //        return ResponseEntity.ok().build();
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("${end.point.all}")
+    public ResponseEntity<CustomResponse<PaginationResponse<PostSearchDto>>> findAllPosts(
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "10", name = "limit") int limit) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        Pageable pageable = PageRequest.of(page, limit);
+
+        CustomResponse<PaginationResponse<PostSearchDto>> response = postService.findAllByPage(pageable);
+
+        return ResponseEntity.ok(response);
     }
 }

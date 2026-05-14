@@ -1,16 +1,20 @@
 package practical.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import practical.post.mapper.PostMapper;
 import practical.post.model.constants.ApiErrorMessage;
 import practical.post.model.dto.post.PostDto;
+import practical.post.model.dto.post.PostSearchDto;
 import practical.post.model.entity.Post;
 import practical.post.model.exceptions.DataExistsException;
 import practical.post.model.exceptions.NotFoundException;
 import practical.post.model.request.post.PostRequest;
 import practical.post.model.request.post.UpdatePostRequest;
 import practical.post.model.response.CustomResponse;
+import practical.post.model.response.PaginationResponse;
 import practical.post.repository.PostRepository;
 import practical.post.service.PostService;
 
@@ -79,5 +83,23 @@ public class PostServiceImpl implements PostService {
         post.setDeleted(true);
 
         postRepository.save(post);
+    }
+
+    @Override
+    public CustomResponse<PaginationResponse<PostSearchDto>> findAllByPage(Pageable pageable) {
+        Page<PostSearchDto> posts = postRepository.findAll(pageable)
+                .map(postMapper::convertPostToPostSearchDto);
+
+        PaginationResponse<PostSearchDto> response = new PaginationResponse<>(
+                posts.getContent(),
+                new PaginationResponse.Pagination(
+                        posts.getTotalElements(),
+                        pageable.getPageSize(),
+                        pageable.getPageNumber() + 1,
+                        posts.getTotalPages()
+                )
+        );
+
+        return CustomResponse.createSuccessful(response);
     }
 }
