@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CustomResponse<PostDto> findById(int id) {
-        Post post = postRepository.findById(id).orElseThrow(
+        Post post = postRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
 
@@ -56,16 +56,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CustomResponse<PostDto> update(int id, UpdatePostRequest postRequest) {
-        Post post = postRepository.findById(id).orElseThrow(
+    public CustomResponse<PostDto> update(int id, UpdatePostRequest updatePostRequest) {
+        Post post = postRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
 
-        if (!post.getTitle().equals(postRequest.getTitle()) && postRepository.existsByTitle(postRequest.getTitle())) {
-            throw new DataExistsException(ApiErrorMessage.POST_WITH_THIS_TITLE_EXIST.getMessage(postRequest.getTitle()));
+        if (!post.getTitle().equals(updatePostRequest.getTitle()) && postRepository.existsByTitle(updatePostRequest.getTitle())) {
+            throw new DataExistsException(ApiErrorMessage.POST_WITH_THIS_TITLE_EXIST.getMessage(updatePostRequest.getTitle()));
         }
 
-        post.setTitle(postRequest.getTitle());
+        post.setTitle(updatePostRequest.getTitle());
         post.setContent(post.getContent());
         post.setUpdated(LocalDateTime.now());
 
@@ -78,7 +78,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(int id) {
-        Post post = postRepository.findById(id).orElseThrow(
+        Post post = postRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
 

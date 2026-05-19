@@ -9,82 +9,83 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practical.post.model.constants.ApiLogMessage;
-import practical.post.model.dto.post.PostDto;
-import practical.post.model.dto.post.PostSearchDto;
-import practical.post.model.request.post.PostRequest;
-import practical.post.model.request.post.PostSearchRequest;
-import practical.post.model.request.post.UpdatePostRequest;
+import practical.post.model.dto.user.UserDto;
+import practical.post.model.dto.user.UserSearchDto;
+import practical.post.model.request.user.UpdateUserRequest;
+import practical.post.model.request.user.UserRequest;
+import practical.post.model.request.user.UserSearchRequest;
 import practical.post.model.response.CustomResponse;
 import practical.post.model.response.PaginationResponse;
-import practical.post.service.PostService;
+import practical.post.service.UserService;
 import practical.post.utils.ApiUtils;
 
-@RequestMapping("${end.point.posts}")
+
+@RequestMapping("${end.point.users}")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class PostController {
-    private final PostService postService;
+public class UserController {
+    private final UserService userService;
 
     @GetMapping("${end.point.id}")
-    public ResponseEntity<CustomResponse<PostDto>> findPostById(@PathVariable int id) {
+    public ResponseEntity<CustomResponse<UserDto>> findUserById(@PathVariable int id) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        CustomResponse<PostDto> postDtoCustomResponse = postService.findById(id);
+        CustomResponse<UserDto> userDtoCustomResponse = userService.findById(id);
 
-        return ResponseEntity.ok(postDtoCustomResponse);
+        return ResponseEntity.ok(userDtoCustomResponse);
     }
 
     @PostMapping("${end.point.create}")
-    public ResponseEntity<CustomResponse<PostDto>> savePost(@Valid @RequestBody PostRequest postRequest) {
+    public ResponseEntity<CustomResponse<UserDto>> saveUser(@Valid @RequestBody UserRequest userRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        CustomResponse<PostDto> postDtoCustomResponse = postService.save(postRequest);
+        CustomResponse<UserDto> userDtoCustomResponse = userService.save(userRequest);
 
-        return ResponseEntity.ok(postDtoCustomResponse);
+        return ResponseEntity.ok(userDtoCustomResponse);
     }
 
     @PutMapping("${end.point.update}")
-    public ResponseEntity<CustomResponse<PostDto>> updatePost(@PathVariable int id,
-                                                              @Valid @RequestBody UpdatePostRequest updatePostRequest) {
+    public ResponseEntity<CustomResponse<UserDto>> updateUser(@PathVariable int id,
+                                                              @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        CustomResponse<PostDto> postDtoCustomResponse = postService.update(id, updatePostRequest);
+        CustomResponse<UserDto> userDtoCustomResponse = userService.update(id, updateUserRequest);
 
-        return ResponseEntity.ok(postDtoCustomResponse);
+        return ResponseEntity.ok(userDtoCustomResponse);
     }
 
     @DeleteMapping("${end.point.delete}")
-    public ResponseEntity<Void> deletePost(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        postService.delete(id);
+        userService.delete(id);
 //        return ResponseEntity.ok().build();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("${end.point.all}")
-    public ResponseEntity<CustomResponse<PaginationResponse<PostSearchDto>>> findAllPosts(
+    public ResponseEntity<CustomResponse<PaginationResponse<UserSearchDto>>> findAllUsers(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "limit") int limit) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
-        CustomResponse<PaginationResponse<PostSearchDto>> response = postService.findAllByPage(pageable);
+        CustomResponse<PaginationResponse<UserSearchDto>> response = userService.findAllByPage(pageable);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("${end.point.search}")
-    public ResponseEntity<CustomResponse<PaginationResponse<PostSearchDto>>> findAllPostsWithCriteria(
+    public ResponseEntity<CustomResponse<PaginationResponse<UserSearchDto>>> findAllUsersWithCriteria(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "limit") int limit,
-            @RequestBody PostSearchRequest postSearchRequest) {
+            @RequestBody UserSearchRequest userSearchRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
-        CustomResponse<PaginationResponse<PostSearchDto>> response = postService.findAllByPageWithCriteria(postSearchRequest, pageable);
+        CustomResponse<PaginationResponse<UserSearchDto>> response = userService.findAllByPageWithCriteria(userSearchRequest, pageable);
 
         return ResponseEntity.ok(response);
     }

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer>, JpaSpecificationExecutor<Post> {
-    boolean existsByTitle(String title);
-
     Optional<Post> findByIdAndDeletedFalse(int id);
+
+    boolean existsByTitle(String title);
 }

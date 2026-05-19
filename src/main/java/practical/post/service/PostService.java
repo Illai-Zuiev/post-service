@@ -14,10 +14,11 @@ public interface PostService {
 
     CustomResponse<PostDto> save(PostRequest postRequest);
 
-    CustomResponse<PostDto> update(int id, UpdatePostRequest postRequest);
+    CustomResponse<PostDto> update(int id, UpdatePostRequest updatePostRequest);
 
     void delete(int id);
 
     CustomResponse<PaginationResponse<PostSearchDto>> findAllByPage(Pageable pageable);
+
     CustomResponse<PaginationResponse<PostSearchDto>> findAllByPageWithCriteria(PostSearchRequest postSearchRequest, Pageable pageable);
 }
