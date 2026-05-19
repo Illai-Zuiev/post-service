@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import practical.post.model.enums.RegistrationStatus;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -45,4 +46,10 @@ public class User {
     private LocalDateTime lastLogin = LocalDateTime.now();
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles;
 }
