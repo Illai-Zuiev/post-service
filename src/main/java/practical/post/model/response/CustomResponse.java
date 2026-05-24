@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import practical.post.model.constants.ApiMessage;
 
 import java.io.Serializable;
 
@@ -17,5 +18,9 @@ public class CustomResponse<T> implements Serializable {
 
     public static <T extends Serializable> CustomResponse<T> createSuccessful(T body) {
         return new CustomResponse<>(StringUtils.EMPTY, body, true);
+    }
+
+    public static <T extends Serializable> CustomResponse<T> createSuccessfulWithNewToken(T body) {
+        return new CustomResponse<>(ApiMessage.TOKEN_CREATED_OR_UPDATED.getMessage(), body, true);
     }
 }

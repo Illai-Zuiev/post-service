@@ -31,9 +31,16 @@ end:
   point:
     posts: /post
     users: /user
+    auth: /auth
+    login: /login
+    registration: /registration
+    refresh_token: /refresh
     id: /{id}
     create: /create
     update: /update/{id}
     delete: /delete/{id}
     all: /all
     search: /search
+jwt:
+  secret: 7K2kJvNxQr8mP9jL2xJ5hQ8vN3sM6wD1yE4fH7cB9vZ2tR5gS3kL8jM0pQ4dW6xY9uF3nH7vJ2sK5cL8oM1eN3rP5sQ7tR9uT1vV3wW5xX7yY8zZ0aA2bB4cC6dD8eE0fF2gG4hH6jJ8kK0lL2mM4nN6oO8pP0qQ2rR4sS6tT8uU0vV2wW4xX6yY8zZ0aA
+  expiration: 3600000
