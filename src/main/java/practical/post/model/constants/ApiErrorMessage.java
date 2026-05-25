@@ -23,6 +23,9 @@ public enum ApiErrorMessage {
             "at least " + ApiConstants.REQUIRED_MIN_LETTERS_NUMBER_EVERY_CASE_IN_PASSWORD + " letters in every case," +
             "and has length " + ApiConstants.REQUIRED_MIN_PASSWORD_LENGTH + " symbols"),
     ACCESS_DENIED("You don't have necessary permissions"),
+    EXPIRED_TOKEN("Token is expired"),
+    INVALID_TOKEN_SIGNATURE("Token has invalid signature"),
+    ERROR_DURING_JWT_PROCESSING("Error during jwt processing"),
     ;
     private final String message;
 
