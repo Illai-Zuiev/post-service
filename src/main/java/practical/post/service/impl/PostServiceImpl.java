@@ -10,6 +10,7 @@ import practical.post.model.constants.ApiErrorMessage;
 import practical.post.model.dto.post.PostDto;
 import practical.post.model.dto.post.PostSearchDto;
 import practical.post.model.entity.Post;
+import practical.post.model.entity.User;
 import practical.post.model.exceptions.DataExistsException;
 import practical.post.model.exceptions.NotFoundException;
 import practical.post.model.request.post.PostRequest;
@@ -18,6 +19,7 @@ import practical.post.model.request.post.UpdatePostRequest;
 import practical.post.model.response.CustomResponse;
 import practical.post.model.response.PaginationResponse;
 import practical.post.repository.PostRepository;
+import practical.post.repository.UserRepository;
 import practical.post.repository.criteria.PostSearchCriteria;
 import practical.post.service.PostService;
 
@@ -27,6 +29,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final PostMapper postMapper;
 
     @Override
@@ -41,12 +44,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CustomResponse<PostDto> save(PostRequest postRequest) {
+    public CustomResponse<PostDto> save(PostRequest postRequest, int userId) {
         if (postRepository.existsByTitle(postRequest.getTitle())) {
             throw new DataExistsException(ApiErrorMessage.POST_WITH_THIS_TITLE_EXIST.getMessage(postRequest.getTitle()));
         }
 
+        User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(
+                () -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId))
+        );
+
         Post post = postMapper.convertPostRequestToPost(postRequest);
+        post.setUser(user);
 
         post = postRepository.save(post);
 

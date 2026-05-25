@@ -16,11 +16,13 @@ import java.util.Objects;
         imports = {Objects.class}
 )
 public interface PostMapper {
+    @Mapping(target = "userId", source = "user.id")
     PostDto convertPostToPostDto(Post post);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "updated", ignore = true)
     @Mapping(target = "deleted", ignore = true)
     Post convertPostRequestToPost(PostRequest postRequest);
+    @Mapping(target = "userId", source = "user.id")
     PostSearchDto convertPostToPostSearchDto(Post post);
 }

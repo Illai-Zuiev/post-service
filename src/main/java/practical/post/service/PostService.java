@@ -12,7 +12,7 @@ import practical.post.model.response.PaginationResponse;
 public interface PostService {
     CustomResponse<PostDto> findById(int id);
 
-    CustomResponse<PostDto> save(PostRequest postRequest);
+    CustomResponse<PostDto> save(PostRequest postRequest, int userId);
 
     CustomResponse<PostDto> update(int id, UpdatePostRequest updatePostRequest);
 

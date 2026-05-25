@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import practical.post.model.constants.ApiLogMessage;
 import practical.post.model.dto.post.PostDto;
@@ -16,6 +17,7 @@ import practical.post.model.request.post.PostSearchRequest;
 import practical.post.model.request.post.UpdatePostRequest;
 import practical.post.model.response.CustomResponse;
 import practical.post.model.response.PaginationResponse;
+import practical.post.security.CustomUserDetails;
 import practical.post.service.PostService;
 import practical.post.utils.ApiUtils;
 
@@ -36,10 +38,10 @@ public class PostController {
     }
 
     @PostMapping("${end.point.create}")
-    public ResponseEntity<CustomResponse<PostDto>> savePost(@Valid @RequestBody PostRequest postRequest) {
+    public ResponseEntity<CustomResponse<PostDto>> savePost(@Valid @RequestBody PostRequest postRequest, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        CustomResponse<PostDto> postDtoCustomResponse = postService.save(postRequest);
+        CustomResponse<PostDto> postDtoCustomResponse = postService.save(postRequest, customUserDetails.getUser().getId());
 
         return ResponseEntity.ok(postDtoCustomResponse);
     }

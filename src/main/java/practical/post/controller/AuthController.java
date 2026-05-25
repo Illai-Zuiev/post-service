@@ -45,7 +45,7 @@ public class AuthController {
     }
 
     @GetMapping("${end.point.refresh_token}")
-    public ResponseEntity<?> refreshToken(@RequestParam String refreshToken,HttpServletResponse response) {
+    public ResponseEntity<?> refreshToken(@RequestParam String refreshToken, HttpServletResponse response) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
         CustomResponse<UserProfileDto> refreshResponse = authService.refreshToken(refreshToken);
