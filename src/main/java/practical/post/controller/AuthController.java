@@ -1,5 +1,11 @@
 package practical.post.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,10 +25,27 @@ import practical.post.utils.ApiUtils;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Auth", description = "Auth methods")
 public class AuthController {
     private final AuthService authService;
 
     @PostMapping("${end.point.login}")
+    @Operation(
+            summary = "user login",
+            description = "auth user and return tokens"
+    )
+    @ApiResponses(
+            value = @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful auth",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    value = "{ \"token\" : \"sdskfdsmk541...\" }"
+                            )
+                    )
+            )
+    )
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -34,6 +57,10 @@ public class AuthController {
     }
 
     @PostMapping("${end.point.registration}")
+    @Operation(
+            summary = "user registration",
+            description = "register user and return tokens"
+    )
     public ResponseEntity<?> registration(@RequestBody @Valid RegistrationRequest registrationRequest, HttpServletResponse response) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -45,6 +72,10 @@ public class AuthController {
     }
 
     @GetMapping("${end.point.refresh_token}")
+    @Operation(
+            summary = "user refresh token",
+            description = "return and refresh tokens"
+    )
     public ResponseEntity<?> refreshToken(@RequestParam String refreshToken, HttpServletResponse response) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 

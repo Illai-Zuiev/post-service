@@ -1,5 +1,7 @@
 package practical.post.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +27,15 @@ import practical.post.utils.ApiUtils;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Post", description = "Post methods")
 public class PostController {
     private final PostService postService;
 
     @GetMapping("${end.point.id}")
+    @Operation(
+            summary = "post find",
+            description = "find post by id"
+    )
     public ResponseEntity<CustomResponse<PostDto>> findPostById(@PathVariable int id) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -38,6 +45,10 @@ public class PostController {
     }
 
     @PostMapping("${end.point.create}")
+    @Operation(
+            summary = "post save",
+            description = "save and return post"
+    )
     public ResponseEntity<CustomResponse<PostDto>> savePost(@Valid @RequestBody PostRequest postRequest, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -47,6 +58,10 @@ public class PostController {
     }
 
     @PutMapping("${end.point.update}")
+    @Operation(
+            summary = "post update",
+            description = "update and return post"
+    )
     public ResponseEntity<CustomResponse<PostDto>> updatePost(@PathVariable int id,
                                                               @Valid @RequestBody UpdatePostRequest updatePostRequest,
                                                               @AuthenticationPrincipal CustomUserDetails customUserDetails) {
@@ -58,6 +73,10 @@ public class PostController {
     }
 
     @DeleteMapping("${end.point.delete}")
+    @Operation(
+            summary = "post delete",
+            description = "delete post"
+    )
     public ResponseEntity<Void> deletePost(@PathVariable int id, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -68,6 +87,10 @@ public class PostController {
     }
 
     @GetMapping("${end.point.all}")
+    @Operation(
+            summary = "post find all",
+            description = "find and return all posts"
+    )
     public ResponseEntity<CustomResponse<PaginationResponse<PostSearchDto>>> findAllPosts(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "limit") int limit) {
@@ -80,6 +103,10 @@ public class PostController {
     }
 
     @PostMapping("${end.point.search}")
+    @Operation(
+            summary = "post find all with criteria",
+            description = "find and return all posts with some criteria"
+    )
     public ResponseEntity<CustomResponse<PaginationResponse<PostSearchDto>>> findAllPostsWithCriteria(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "limit") int limit,

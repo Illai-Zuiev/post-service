@@ -1,5 +1,7 @@
 package practical.post.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +27,15 @@ import practical.post.utils.ApiUtils;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Comment", description = "Comment methods")
 public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("${end.point.id}")
+    @Operation(
+            summary = "comment find",
+            description = "find comment by id"
+    )
     public ResponseEntity<CustomResponse<CommentDto>> findPostById(@PathVariable int id) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -38,6 +45,10 @@ public class CommentController {
     }
 
     @PostMapping("${end.point.create}")
+    @Operation(
+            summary = "comment save",
+            description = "save and return comment"
+    )
     public ResponseEntity<CustomResponse<CommentDto>> savePost(@Valid @RequestBody CommentRequest commentRequest, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -47,6 +58,10 @@ public class CommentController {
     }
 
     @PutMapping("${end.point.update}")
+    @Operation(
+            summary = "comment update",
+            description = "update and return comment"
+    )
     public ResponseEntity<CustomResponse<CommentDto>> updatePost(@PathVariable int id,
                                                                  @Valid @RequestBody UpdateCommentRequest updateCommentRequest,
                                                                  @AuthenticationPrincipal CustomUserDetails customUserDetails) {
@@ -58,6 +73,10 @@ public class CommentController {
     }
 
     @DeleteMapping("${end.point.delete}")
+    @Operation(
+            summary = "comment delete",
+            description = "delete comment"
+    )
     public ResponseEntity<Void> deletePost(@PathVariable int id, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
@@ -68,6 +87,10 @@ public class CommentController {
     }
 
     @GetMapping("${end.point.all}")
+    @Operation(
+            summary = "comment find all",
+            description = "find and return all comments"
+    )
     public ResponseEntity<CustomResponse<PaginationResponse<CommentSearchDto>>> findAllPosts(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "limit") int limit) {
@@ -80,6 +103,10 @@ public class CommentController {
     }
 
     @PostMapping("${end.point.search}")
+    @Operation(
+            summary = "comment find all with criteria",
+            description = "find and return all comments with some criteria"
+    )
     public ResponseEntity<CustomResponse<PaginationResponse<CommentSearchDto>>> findAllPostsWithCriteria(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "limit") int limit,
