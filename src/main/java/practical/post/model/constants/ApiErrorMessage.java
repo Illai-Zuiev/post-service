@@ -8,6 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ApiErrorMessage {
     POST_NOT_FOUND_BY_ID("The post not found with id: %s"),
+    COMMENT_NOT_FOUND_BY_ID("The comment not found with id: %s"),
     USER_NOT_FOUND_BY_ID("The user not found with id: %s"),
     USER_NOT_FOUND_BY_EMAIL("The user not found with email: %s"),
     ROLE_NOT_FOUND_BY_NAME("The role not found with name: %s"),

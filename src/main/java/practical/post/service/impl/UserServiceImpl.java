@@ -1,5 +1,6 @@
 package practical.post.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public CustomResponse<UserDto> update(int id, UpdateUserRequest updateUserRequest) {
         User user = userRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(id))
@@ -77,14 +79,13 @@ public class UserServiceImpl implements UserService {
         user.setUsername(updateUserRequest.getUsername());
         user.setUpdated(LocalDateTime.now());
 
-        user = userRepository.save(user);
-
         UserDto userDto = userMapper.convertUserToUserDto(user);
 
         return CustomResponse.createSuccessful(userDto);
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         User user = userRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(id))
@@ -92,8 +93,6 @@ public class UserServiceImpl implements UserService {
 
         user.setUpdated(LocalDateTime.now());
         user.setDeleted(true);
-
-        userRepository.save(user);
     }
 
     @Override

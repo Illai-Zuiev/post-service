@@ -31,6 +31,7 @@ end:
   point:
     posts: /post
     users: /user
+    comments: /comment
     auth: /auth
     login: /login
     registration: /registration

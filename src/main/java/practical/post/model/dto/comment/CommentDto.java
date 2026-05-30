@@ -1,4 +1,4 @@
-package practical.post.model.dto.post;
+package practical.post.model.dto.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostSearchDto implements Serializable {
+public class CommentDto implements Serializable {
     private int id;
     private OwnerDto owner;
-    private String title;
+    private int postId;
     private String content;
     private LocalDateTime created;
     private LocalDateTime updated;
-    private boolean deleted;
 }

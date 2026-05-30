@@ -41,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final AccessValidationService accessValidationService;
 
     @Override
     public CustomResponse<UserProfileDto> login(LoginRequest loginRequest) {
@@ -63,21 +64,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public CustomResponse<UserProfileDto> registration(RegistrationRequest registrationRequest) {
-        if (!registrationRequest.getPassword().equals(registrationRequest.getConfirmPassword())) {
-            throw new InvalidDataException(ApiErrorMessage.MISMATCHED_PASSWORDS.getMessage());
-        }
-
-        if (PasswordUtils.isNotValidPassword(registrationRequest.getPassword())) {
-            throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getMessage());
-        }
-
-        if (userRepository.existsByUsername(registrationRequest.getUsername())) {
-            throw new DataExistsException(ApiErrorMessage.USER_WITH_THIS_USERNAME_EXIST.getMessage(registrationRequest.getUsername()));
-        }
-
-        if (userRepository.existsByEmail(registrationRequest.getEmail())) {
-            throw new DataExistsException(ApiErrorMessage.USER_WITH_THIS_EMAIL_EXIST.getMessage(registrationRequest.getEmail()));
-        }
+        accessValidationService.validateUserBeforeRegistration(registrationRequest);
 
         User user = userMapper.convertUserRequestToUser(registrationRequest);
 

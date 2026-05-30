@@ -1,5 +1,6 @@
 package practical.post.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AccessValidationService accessValidationService;
     private final PostMapper postMapper;
 
     @Override
@@ -45,9 +47,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public CustomResponse<PostDto> save(PostRequest postRequest, int userId) {
-        if (postRepository.existsByTitle(postRequest.getTitle())) {
-            throw new DataExistsException(ApiErrorMessage.POST_WITH_THIS_TITLE_EXIST.getMessage(postRequest.getTitle()));
-        }
+        accessValidationService.validatePostBeforeCreating(postRequest);
 
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND_BY_ID.getMessage(userId))
@@ -64,10 +64,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public CustomResponse<PostDto> update(int id, UpdatePostRequest updatePostRequest) {
+    @Transactional
+    public CustomResponse<PostDto> update(int id, int currentUserId, UpdatePostRequest updatePostRequest) {
         Post post = postRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
+
+        accessValidationService.validateOwner(currentUserId, post.getUser().getId());
 
         if (!post.getTitle().equals(updatePostRequest.getTitle()) && postRepository.existsByTitle(updatePostRequest.getTitle())) {
             throw new DataExistsException(ApiErrorMessage.POST_WITH_THIS_TITLE_EXIST.getMessage(updatePostRequest.getTitle()));
@@ -77,23 +80,22 @@ public class PostServiceImpl implements PostService {
         post.setContent(post.getContent());
         post.setUpdated(LocalDateTime.now());
 
-        post = postRepository.save(post);
-
         PostDto postDto = postMapper.convertPostToPostDto(post);
 
         return CustomResponse.createSuccessful(postDto);
     }
 
     @Override
-    public void delete(int id) {
+    @Transactional
+    public void delete(int id, int currentUserId) {
         Post post = postRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(id))
         );
 
+        accessValidationService.validateOwner(currentUserId, post.getUser().getId());
+
         post.setUpdated(LocalDateTime.now());
         post.setDeleted(true);
-
-        postRepository.save(post);
     }
 
     @Override

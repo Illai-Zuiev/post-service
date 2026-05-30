@@ -3,10 +3,10 @@ package practical.post.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import practical.post.model.dto.post.PostDto;
-import practical.post.model.dto.post.PostSearchDto;
-import practical.post.model.entity.Post;
-import practical.post.model.request.post.PostRequest;
+import practical.post.model.dto.comment.CommentDto;
+import practical.post.model.dto.comment.CommentSearchDto;
+import practical.post.model.entity.Comment;
+import practical.post.model.request.comment.CommentRequest;
 
 import java.util.Objects;
 
@@ -15,18 +15,22 @@ import java.util.Objects;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         imports = {Objects.class}
 )
-public interface PostMapper {
+public interface CommentMapper {
+    @Mapping(target = "postId", source = "post.id")
     @Mapping(target = "owner.id", source = "user.id")
     @Mapping(target = "owner.email", source = "user.email")
     @Mapping(target = "owner.username", source = "user.username")
-    PostDto convertPostToPostDto(Post post);
+    CommentDto convertCommentToCommentDto(Comment comment);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     @Mapping(target = "updated", ignore = true)
     @Mapping(target = "deleted", ignore = true)
-    Post convertPostRequestToPost(PostRequest postRequest);
+    Comment convertCommentRequestToComment(CommentRequest commentRequest);
+
+    @Mapping(target = "postId", source = "post.id")
     @Mapping(target = "owner.id", source = "user.id")
     @Mapping(target = "owner.email", source = "user.email")
     @Mapping(target = "owner.username", source = "user.username")
-    PostSearchDto convertPostToPostSearchDto(Post post);
+    CommentSearchDto convertCommentToCommentSearchDto(Comment comment);
 }

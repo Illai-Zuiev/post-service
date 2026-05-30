@@ -14,9 +14,9 @@ public interface PostService {
 
     CustomResponse<PostDto> save(PostRequest postRequest, int userId);
 
-    CustomResponse<PostDto> update(int id, UpdatePostRequest updatePostRequest);
+    CustomResponse<PostDto> update(int id, int currentUserId, UpdatePostRequest updatePostRequest);
 
-    void delete(int id);
+    void delete(int id, int currentUserId);
 
     CustomResponse<PaginationResponse<PostSearchDto>> findAllByPage(Pageable pageable);
 
