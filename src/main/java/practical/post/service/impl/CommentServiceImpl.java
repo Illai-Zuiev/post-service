@@ -54,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
         );
 
         Post post = postRepository.findByIdAndDeletedFalse(commentRequest.getPostId()).orElseThrow(
-                () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(userId))
+                () -> new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.getMessage(commentRequest.getPostId()))
         );
 
         Comment comment = commentMapper.convertCommentRequestToComment(commentRequest);
