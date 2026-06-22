@@ -2,6 +2,7 @@ package practical.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import practical.post.model.constants.ApiErrorMessage;
 import practical.post.model.enums.UserSystemRole;
@@ -13,8 +14,6 @@ import practical.post.model.request.post.PostRequest;
 import practical.post.repository.PostRepository;
 import practical.post.repository.UserRepository;
 import practical.post.security.utils.PasswordUtils;
-
-import java.nio.file.AccessDeniedException;
 
 @Service
 @RequiredArgsConstructor
